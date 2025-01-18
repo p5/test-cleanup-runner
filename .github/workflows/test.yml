@@ -15,13 +15,13 @@ jobs:
       image: redhat/ubi9:latest
       options: --privileged --volume /:/run/host:rw --volume /var/run/docker.sock:/var/run/docker.sock
     steps:
+      - name: Install Podman
+        run: |
+          dnf install -y podman
+
       - name: Reclaim Disk Space
         run: |
-          dnf install -y moby-engine
-          docker run --rm --privileged --volume /run/host:/run/host:rw docker.io/library/ubuntu:24.04 bash -c "apt -o Dir=/run/host remove -y '^mysql-.*'"
-
-          docker image prune --all --force
-          dnf remove -y moby-engine
+          podman run --rm --privileged --volume /run/host:/run/host:rw docker.io/library/ubuntu:24.04 bash -c "apt -o Dir=/run/host remove -y '^mysql-.*'"
 
           rm -rf "/run/host/usr/local/lib/android"
           rm -rf "/run/host/usr/share/dotnet"
