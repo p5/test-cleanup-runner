@@ -31,7 +31,7 @@ jobs:
             --volume /run/host/var/cache/apt/archives/partial:/var/cache/apt/archives/partial:rw \
             --volume /run/host/var/lib/dpkg/status:/var/lib/dpkg/status:rw \
             --volume /run/host/var/lib/dpkg/status-old:/var/lib/dpkg/status-old:rw \
-            docker.io/library/ubuntu:24.04 bash -c "apt -o Dir=/run/host remove -y '^mysql-.*'"
+            docker.io/library/ubuntu:24.04 bash -c "chroot /run/host; apt -o Dir=/run/host remove -y '^mysql-.*'"
 
           rm -rf "/run/host/usr/local/lib/android"
           rm -rf "/run/host/usr/share/dotnet"
