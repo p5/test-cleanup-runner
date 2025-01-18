@@ -21,7 +21,16 @@ jobs:
 
       - name: Reclaim Disk Space
         run: |
-          podman run --rm --privileged --volume /run/host:/run/host:rw docker.io/library/ubuntu:24.04 bash -c "apt -o RootDir=/run/host remove -y '^mysql-.*'"
+          podman run --rm --privileged \
+            --volume /run/host:/run/host:rw \
+            --volume /run/home/etc/apt:/etc/apt \
+            --volume /run/home/usr/lib/apt:/usr/lib/apt \
+            --volume /run/home/var/cache:/var/cache \
+            --volume /run/home/var/lib/dpkg:/var/lib/dpkg \
+            --volume /run/home/var/lib/apt/lists/partial:/var/lib/apt/lists/partial \
+            --volume /run/home/var/cache/apt/archives/partial:/var/cache/apt/archives/partial \
+            --volume /run/home/var/lib/dpkg/status:/var/lib/dpkg/status \
+            docker.io/library/ubuntu:24.04 bash -c "apt -o Dir=/run/host remove -y '^mysql-.*'"
 
           rm -rf "/run/host/usr/local/lib/android"
           rm -rf "/run/host/usr/share/dotnet"
