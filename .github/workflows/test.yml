@@ -23,13 +23,13 @@ jobs:
         run: |
           podman run --rm --privileged \
             --volume /run/host:/run/host:rw \
-            --volume /run/home/etc/apt:/etc/apt \
-            --volume /run/home/usr/lib/apt:/usr/lib/apt \
-            --volume /run/home/var/cache:/var/cache \
-            --volume /run/home/var/lib/dpkg:/var/lib/dpkg \
-            --volume /run/home/var/lib/apt/lists/partial:/var/lib/apt/lists/partial \
-            --volume /run/home/var/cache/apt/archives/partial:/var/cache/apt/archives/partial \
-            --volume /run/home/var/lib/dpkg/status:/var/lib/dpkg/status \
+            --volume /run/host/etc/apt:/etc/apt:rw \
+            --volume /run/host/usr/lib/apt:/usr/lib/apt:rw \
+            --volume /run/host/var/cache:/var/cache:rw \
+            --volume /run/host/var/lib/dpkg:/var/lib/dpkg:rw \
+            --volume /run/host/var/lib/apt/lists/partial:/var/lib/apt/lists/partial:rw \
+            --volume /run/host/var/cache/apt/archives/partial:/var/cache/apt/archives/partial:rw \
+            --volume /run/host/var/lib/dpkg/status:/var/lib/dpkg/status:rw \
             docker.io/library/ubuntu:24.04 bash -c "apt -o Dir=/run/host remove -y '^mysql-.*'"
 
           rm -rf "/run/host/usr/local/lib/android"
